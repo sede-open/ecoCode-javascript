@@ -51,12 +51,11 @@ jobs:
         run: mvn -e -B verify
         working-directory: sonar-plugin
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        if: |
-          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
-          matrix.node-version == '20.x' &&
-          github.actor != 'dependabot[bot]'
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@3.0.0 # Ex: v2.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
